@@ -29,4 +29,24 @@ module App
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
   end
+
+  # config/application.rb
+
+  module DiscordLikeApp
+    class Application < Rails::Application
+      # 他の設定...
+
+      config.middleware.insert_before 0, Rack::Cors do
+        allow do
+          origins 'http://localhost:8000' # Next.jsのフロントエンドのURL
+
+          resource '*',
+                   headers: :any,
+                   methods: [:get, :post, :put, :patch, :delete, :options, :head],
+                   credentials: true
+        end
+      end
+    end
+  end
+
 end
