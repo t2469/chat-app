@@ -6,13 +6,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: app_development
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
+      # MYSQL_USER: root          # 削除
+      # MYSQL_PASSWORD: password  # 削除
     ports:
       - "3306:3306"
     volumes:
       - mysql-db:/var/lib/mysql
-    
+
   backend:
     build:
       context: ./backend
@@ -24,7 +24,7 @@ services:
       - ./backend:/app
     depends_on:
       - db
-      
+
   frontend:
     build:
       context: ./frontend
