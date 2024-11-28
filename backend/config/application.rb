@@ -30,15 +30,11 @@ module App
     config.api_only = true
   end
 
-  # config/application.rb
-
   module DiscordLikeApp
     class Application < Rails::Application
-      # 他の設定...
-
       config.middleware.insert_before 0, Rack::Cors do
         allow do
-          origins 'http://localhost:8000' # Next.jsのフロントエンドのURL
+          origins 'http://localhost:8000'
 
           resource '*',
                    headers: :any,
