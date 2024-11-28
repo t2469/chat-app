@@ -35,7 +35,8 @@ services:
     ports:
       - "8000:3000"
     volumes:
-      - ./frontend/app:/usr/src/app
+      - ./frontend:/usr/src/app
+    working_dir: /usr/src/app
     command: "npm run dev"
 
   redis:

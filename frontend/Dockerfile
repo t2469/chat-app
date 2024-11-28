@@ -6,10 +6,9 @@ WORKDIR /usr/src/app
 # Next.js のテレメトリ機能を無効化
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# RUN npm run build
+ COPY package*.json ./
+ RUN npm install
+ COPY . .
 
-# # アプリケーションを起動
-# CMD ["npm", "run", "start"]
+ # アプリケーションを起動
+ CMD ["npm", "run", "start"]
