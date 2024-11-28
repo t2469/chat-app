@@ -38,6 +38,16 @@ services:
       - ./frontend/app:/usr/src/app
     command: "npm run dev"
 
+  redis:
+    image: redis:6.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   mysql-db:
+    driver: local
+  redis-data:
     driver: local
