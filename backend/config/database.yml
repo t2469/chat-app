@@ -34,7 +34,7 @@ test:
 # ever seen by anyone, they now have access to your database.
 #
 # Instead, provide the password or a full connection URL as an environment
-# variable when you boot the app. For example:
+# variable when you boot the _app. For example:
 #
 #   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
 #
@@ -52,5 +52,5 @@ test:
 production:
   <<: *default
   database: app_production
-  username: app
+  username: _app
   password: <%= ENV["APP_DATABASE_PASSWORD"] %>
