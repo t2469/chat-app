@@ -3,14 +3,6 @@ module Api
     class Api::V1::AuthenticationController < ApplicationController
       skip_before_action :authenticate_request, only: [:signup, :login]
 
-      # def options
-      #   headers['Access-Control-Allow-Origin'] = '*'
-      #   headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-      #   headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
-      #   head :ok
-      # end
-
-      # サインアップ
       def signup
         user = User.new(user_params)
         if user.save
@@ -21,7 +13,6 @@ module Api
         end
       end
 
-      # ログイン
       def login
         user = User.find_by(email: params[:email])
         if user&.authenticate(params[:password])
