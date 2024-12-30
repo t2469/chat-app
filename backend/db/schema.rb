@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_30_142822) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_30_153603) do
+  create_table "server_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "server_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["server_id"], name: "index_server_members_on_server_id"
+    t.index ["user_id"], name: "index_server_members_on_user_id"
+  end
+
   create_table "servers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "icon_url"
@@ -29,5 +39,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_30_142822) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "server_members", "servers"
+  add_foreign_key "server_members", "users"
   add_foreign_key "servers", "users"
 end
