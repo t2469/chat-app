@@ -1,3 +1,6 @@
 class Server < ApplicationRecord
-  belongs_to :user
+  has_many :server_members, dependent: :destroy
+  has_many :members, through: :server_members
+
+  validates :name, presence: true
 end
