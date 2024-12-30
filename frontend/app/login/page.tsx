@@ -23,7 +23,6 @@ const LoginPage = () => {
             await login(form.email, form.password);
             router.push('/dashboard');
         } catch (error) {
-            console.error('Login failed:', error);
             alert('ログインに失敗しました。メールアドレスまたはパスワードが間違っています。');
         }
     };

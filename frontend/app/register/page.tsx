@@ -26,7 +26,6 @@ const RegisterPage = () => {
             await signup(form.username, form.email, form.password);
             router.push('/dashboard');
         } catch (error) {
-            console.error('Registration failed:', error);
             alert('登録に失敗しました。');
         }
     };
