@@ -22,6 +22,10 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (form.password !== form.password_confirmation) {
+            alert('パスワードが一致しません。');
+            return;
+        }
         try {
             await signup(form.username, form.email, form.password);
             router.push('/dashboard');
