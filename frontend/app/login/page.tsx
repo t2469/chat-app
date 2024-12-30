@@ -39,7 +39,7 @@ const LoginPage = () => {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-2 border rounded"
+                    className="w-full p-2 mb-2 border rounded text-black"
                 />
                 <input
                     type="password"
@@ -48,7 +48,7 @@ const LoginPage = () => {
                     value={form.password}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded text-black"
                 />
                 <button type="submit" className="w-full bg-green-500 text-white p-2 rounded">
                     ログイン

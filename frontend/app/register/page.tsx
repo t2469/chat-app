@@ -42,7 +42,7 @@ const RegisterPage = () => {
                     value={form.username}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-2 border rounded"
+                    className="w-full p-2 mb-2 border rounded text-black"
                 />
                 <input
                     type="email"
@@ -51,7 +51,7 @@ const RegisterPage = () => {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-2 border rounded"
+                    className="w-full p-2 mb-2 border rounded text-black"
                 />
                 <input
                     type="password"
@@ -60,7 +60,7 @@ const RegisterPage = () => {
                     value={form.password}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-2 border rounded"
+                    className="w-full p-2 mb-2 border rounded text-black"
                 />
                 <input
                     type="password"
@@ -69,7 +69,7 @@ const RegisterPage = () => {
                     value={form.password_confirmation}
                     onChange={handleChange}
                     required
-                    className="w-full p-2 mb-2 border rounded"
+                    className="w-full p-2 mb-2 border rounded text-black"
                 />
                 {/*<input*/}
                 {/*    type="text"*/}
