@@ -3,7 +3,6 @@ class CreateServers < ActiveRecord::Migration[7.1]
     create_table :servers do |t|
       t.string :name
       t.string :icon_url
-      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end
