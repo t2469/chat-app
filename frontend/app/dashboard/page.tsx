@@ -6,6 +6,7 @@ import {useRouter} from 'next/navigation';
 import api from '@/utils/api';
 import CreateServerForm from '@/components/Server/CreateServerForm';
 import {Server} from '@/app/types/server';
+import ProfilePopup from '@/components/ProfilePopup';
 
 const DashboardPage = () => {
     const {user} = useContext(AuthContext);
@@ -65,6 +66,7 @@ const DashboardPage = () => {
     return (
         <div className="max-w-4xl mx-auto mt-10 p-4">
             <h1 className="text-3xl mb-4">ようこそ、{user.username}さん！</h1>
+            <ProfilePopup />
 
             {/* サーバー一覧 */}
             <div className="mb-6">
@@ -72,7 +74,7 @@ const DashboardPage = () => {
                 <ul>
                     {servers.map((server) => (
                         <li key={server.id} className="mb-2 flex items-center justify-between">
-                            <span className="text-white">{server.name}</span>
+                            <span className="text-black">{server.name}</span>
                             {/* サーバーに参加しているかどうかの判定 */}
                             {server.is_member ? (
                                 <button
@@ -97,7 +99,6 @@ const DashboardPage = () => {
             {/* サーバー作成フォーム */}
             <CreateServerForm onServerCreated={handleServerCreated}/>
         </div>
-
     );
 };
 
