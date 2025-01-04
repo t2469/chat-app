@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import api from '@/utils/api';
-// import { Server } from '@/types';
+import { Server } from '@/app/types/server';
 
 interface CreateServerFormProps {
-    onServerCreated?: (server: any) => void; // サーバー作成後の処理を渡せるように
+    onServerCreated?: (server: Server) => void;
 }
 
 const CreateServerForm: React.FC<CreateServerFormProps> = ({ onServerCreated }) => {
@@ -27,7 +27,7 @@ const CreateServerForm: React.FC<CreateServerFormProps> = ({ onServerCreated }) 
                 onServerCreated(response.data);
             }
             setForm({ name: '', icon_url: '' });
-        } catch (error: any) {
+        } catch (error) {
             console.error('Server creation failed:', error);
             alert('サーバーの作成に失敗しました。');
         }

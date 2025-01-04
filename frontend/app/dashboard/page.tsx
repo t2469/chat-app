@@ -5,18 +5,23 @@ import {AuthContext} from '@/context/AuthContext';
 import {useRouter} from 'next/navigation';
 import api from '@/utils/api';
 import CreateServerForm from '@/components/Server/CreateServerForm';
-// import { Server } from '@/types';
+import {Server} from '@/app/types/server';
 
 const DashboardPage = () => {
     const {user} = useContext(AuthContext);
-    const [servers, setServers] = useState<any[]>([]);
+    const [servers, setServers] = useState<Server[]>([]);
     const router = useRouter();
 
     useEffect(() => {
-        if (!user) {
+        // まだロード中なので、何もしない。
+        if (user === undefined)return;
+
+        // ログインしていない状態なので、/loginへ遷移させる
+        if (user === null) {
             router.push('/login');
             return;
         }
+
         fetchServers();
     }, [user]);
 
@@ -29,7 +34,7 @@ const DashboardPage = () => {
         }
     };
 
-    const handleServerCreated = (newServer: any) => {
+    const handleServerCreated = (newServer: Server) => {
         setServers((prev) => [...prev, newServer]);
     };
 
@@ -45,7 +50,7 @@ const DashboardPage = () => {
                 <ul>
                     {servers.map((server) => (
                         <li key={server.id} className="mb-2">
-              <span className="text-blue-500">
+              <span className="text-white">
                 {server.name}
               </span>
                         </li>
