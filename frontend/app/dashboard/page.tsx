@@ -14,7 +14,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         // まだロード中なので、何もしない。
-        if (user === undefined)return;
+        if (user === undefined) return;
 
         // ログインしていない状態なので、/loginへ遷移させる
         if (user === null) {
@@ -38,6 +38,28 @@ const DashboardPage = () => {
         setServers((prev) => [...prev, newServer]);
     };
 
+    const handleJoin = async (serverId: string) => {
+        try {
+            const response = await api.post(`/servers/${serverId}/join`);
+            alert(response.data.message);
+            fetchServers(); // サーバー一覧を再取得
+        } catch (error: any) {
+            console.error('Error joining server:', error);
+            alert(error.response?.data?.errors?.[0] || 'サーバーへの参加に失敗しました。');
+        }
+    };
+
+    const handleLeave = async (serverId: string) => {
+        try {
+            const response = await api.delete(`/servers/${serverId}/leave`);
+            alert(response.data.message);
+            fetchServers(); // サーバー一覧を再取得
+        } catch (error: any) {
+            console.error('Error leaving server:', error);
+            alert(error.response?.data?.errors?.[0] || 'サーバーからの脱退に失敗しました。');
+        }
+    };
+
     if (!user) return <div>Loading...</div>;
 
     return (
@@ -49,10 +71,24 @@ const DashboardPage = () => {
                 <h2 className="text-2xl mb-2">あなたのサーバー</h2>
                 <ul>
                     {servers.map((server) => (
-                        <li key={server.id} className="mb-2">
-              <span className="text-white">
-                {server.name}
-              </span>
+                        <li key={server.id} className="mb-2 flex items-center justify-between">
+                            <span className="text-white">{server.name}</span>
+                            {/* サーバーに参加しているかどうかの判定 */}
+                            {server.is_member ? (
+                                <button
+                                    onClick={() => handleLeave(server.id)}
+                                    className="bg-red-500 text-white px-2 py-1 rounded"
+                                >
+                                    脱退
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => handleJoin(server.id)}
+                                    className="bg-green-500 text-white px-2 py-1 rounded"
+                                >
+                                    参加
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>

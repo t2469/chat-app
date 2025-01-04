@@ -1,32 +1,32 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import api from '@/utils/api';
-import { Server } from '@/app/types/server';
+import {Server} from '@/app/types/server';
 
 interface CreateServerFormProps {
     onServerCreated?: (server: Server) => void;
 }
 
-const CreateServerForm: React.FC<CreateServerFormProps> = ({ onServerCreated }) => {
+const CreateServerForm: React.FC<CreateServerFormProps> = ({onServerCreated}) => {
     const [form, setForm] = useState({
         name: '',
         icon_url: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await api.post('/servers', { server: form });
+            const response = await api.post('/servers', {server: form});
             alert('サーバーが作成されました。');
             if (onServerCreated) {
                 onServerCreated(response.data);
             }
-            setForm({ name: '', icon_url: '' });
+            setForm({name: '', icon_url: ''});
         } catch (error) {
             console.error('Server creation failed:', error);
             alert('サーバーの作成に失敗しました。');

@@ -39,6 +39,8 @@ gem 'rack-cors'
 
 gem 'redis', '~> 4.0'
 
+gem 'active_model_serializers', '~> 0.10.0'
+
 # ユーザー認証用
 gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
