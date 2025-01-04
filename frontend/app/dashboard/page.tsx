@@ -27,7 +27,7 @@ const DashboardPage = () => {
 
     const fetchServers = async () => {
         try {
-            const response = await api.get('/servers');
+            const response = await api.get('/servers/my_servers');
             setServers(response.data);
         } catch (error) {
             console.error('Error fetching servers:', error);
@@ -42,7 +42,7 @@ const DashboardPage = () => {
         try {
             const response = await api.post(`/servers/${serverId}/join`);
             alert(response.data.message);
-            fetchServers(); // サーバー一覧を再取得
+            fetchServers();
         } catch (error: any) {
             console.error('Error joining server:', error);
             alert(error.response?.data?.errors?.[0] || 'サーバーへの参加に失敗しました。');
@@ -53,7 +53,7 @@ const DashboardPage = () => {
         try {
             const response = await api.delete(`/servers/${serverId}/leave`);
             alert(response.data.message);
-            fetchServers(); // サーバー一覧を再取得
+            fetchServers();
         } catch (error: any) {
             console.error('Error leaving server:', error);
             alert(error.response?.data?.errors?.[0] || 'サーバーからの脱退に失敗しました。');
@@ -68,7 +68,7 @@ const DashboardPage = () => {
 
             {/* サーバー一覧 */}
             <div className="mb-6">
-                <h2 className="text-2xl mb-2">あなたのサーバー</h2>
+                <h2 className="text-2xl mb-2">サーバー</h2>
                 <ul>
                     {servers.map((server) => (
                         <li key={server.id} className="mb-2 flex items-center justify-between">
@@ -97,6 +97,7 @@ const DashboardPage = () => {
             {/* サーバー作成フォーム */}
             <CreateServerForm onServerCreated={handleServerCreated}/>
         </div>
+
     );
 };
 
