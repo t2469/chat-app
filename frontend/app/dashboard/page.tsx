@@ -1,28 +1,24 @@
 'use client';
 
-import React, {useContext, useEffect, useState} from 'react';
-import {AuthContext} from '@/context/AuthContext';
-import {useRouter} from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 import api from '@/utils/api';
 import CreateServerForm from '@/components/Server/CreateServerForm';
-import {Server} from '@/app/types/server';
+import { Server } from '@/app/types/server';
 import ProfilePopup from '@/components/ProfilePopup';
 
 const DashboardPage = () => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [servers, setServers] = useState<Server[]>([]);
     const router = useRouter();
 
     useEffect(() => {
-        // まだロード中なので、何もしない。
         if (user === undefined) return;
-
-        // ログインしていない状態なので、/loginへ遷移させる
         if (user === null) {
             router.push('/login');
             return;
         }
-
         fetchServers();
     }, [user]);
 
@@ -36,7 +32,7 @@ const DashboardPage = () => {
     };
 
     const handleServerCreated = (newServer: Server) => {
-        setServers((prev) => [...prev, newServer]);
+        setServers(prev => [...prev, newServer]);
     };
 
     const handleJoin = async (serverId: string) => {
@@ -64,40 +60,56 @@ const DashboardPage = () => {
     if (!user) return <div>Loading...</div>;
 
     return (
-        <div className="max-w-4xl mx-auto mt-10 p-4">
-            <h1 className="text-3xl mb-4">ようこそ、{user.username}さん！</h1>
-            <ProfilePopup />
+        <div className="flex h-screen bg-gray-900 text-white">
+            {/* サイドバー */}
+            <aside className="w-20 bg-gray-800 py-4 flex flex-col items-center space-y-4">
+                {servers.map(server => (
+                    <button
+                        key={server.id}
+                        className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center
+                       hover:bg-gray-600 transition"
+                        onClick={() => alert(`サーバー ${server.name} をクリックしました`)}
+                    >
+                        {server.name.charAt(0).toUpperCase()}
+                    </button>
+                ))}
+            </aside>
 
-            {/* サーバー一覧 */}
-            <div className="mb-6">
-                <h2 className="text-2xl mb-2">サーバー</h2>
-                <ul>
-                    {servers.map((server) => (
-                        <li key={server.id} className="mb-2 flex items-center justify-between">
-                            <span className="text-black">{server.name}</span>
-                            {/* サーバーに参加しているかどうかの判定 */}
-                            {server.is_member ? (
-                                <button
-                                    onClick={() => handleLeave(server.id)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded"
-                                >
-                                    脱退
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => handleJoin(server.id)}
-                                    className="bg-green-500 text-white px-2 py-1 rounded"
-                                >
-                                    参加
-                                </button>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {/* メインコンテンツ */}
+            <main className="flex-1 p-6 overflow-auto">
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-2xl">ようこそ、{user.username}さん</h1>
+                    <ProfilePopup />
+                </div>
 
-            {/* サーバー作成フォーム */}
-            <CreateServerForm onServerCreated={handleServerCreated}/>
+                <div className="mb-6">
+                    <h2 className="text-xl mb-2">サーバー一覧</h2>
+                    <ul>
+                        {servers.map(server => (
+                            <li key={server.id} className="mb-2 flex items-center justify-between">
+                                <span>{server.name}</span>
+                                {server.is_member ? (
+                                    <button
+                                        onClick={() => handleLeave(server.id)}
+                                        className="bg-red-500 px-2 py-1 rounded hover:bg-red-600 transition"
+                                    >
+                                        脱退
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => handleJoin(server.id)}
+                                        className="bg-green-500 px-2 py-1 rounded hover:bg-green-600 transition"
+                                    >
+                                        参加
+                                    </button>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <CreateServerForm onServerCreated={handleServerCreated} />
+            </main>
         </div>
     );
 };

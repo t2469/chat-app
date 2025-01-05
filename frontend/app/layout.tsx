@@ -1,6 +1,5 @@
 import './globals.css'
 import {AuthProvider} from '@/context/AuthContext';
-import Layout from '../components/Layout/Layout';
 
 export const metadata = {
     title: 'DiscordLikeApp',
@@ -12,7 +11,7 @@ const RootLayout = ({children}: { children: React.ReactNode }) => {
         <html lang="ja">
         <body>
         <AuthProvider>
-            <Layout>{children}</Layout>
+            {children}
         </AuthProvider>
         </body>
         </html>
