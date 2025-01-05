@@ -17,7 +17,7 @@ module Api
         ServerMember.create(server: server, user: current_user, role: 'owner')
         render json: server, serializer: ServerSerializer, scope: current_user, status: :created
       else
-        render json: { errors: server.errors.full_message }, status: :unprocessable_entity
+        render json: { errors: server.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -29,7 +29,7 @@ module Api
         render json: { message: 'サーバーへ参加しました。' }, status: :created
       end
     rescue ActiveRecord::RecordInvalid => e
-      render json: { erros: e.record.errors }, status: :unprocessable_entity
+      render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
     end
 
     def leave

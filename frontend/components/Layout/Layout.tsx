@@ -1,14 +1,19 @@
 'use client';
 
-import Link from 'next/link';
-import { useContext } from 'react';
-import { AuthContext } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import React from 'react';
+import ServerList from '@/components/ServerList';
+import '@/app/globals.css'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="min-h-screen flex flex-col">
-            <main className="flex-1">{children}</main>
+        <div className="flex h-screen">
+            {/* サーバーを左側に配置 */}
+            <ServerList />
+
+            {/* メインコンテンツを右側に配置 */}
+            <div className="flex-1 bg-gray-100 p-4 overflow-auto">
+                {children}
+            </div>
         </div>
     );
 };
