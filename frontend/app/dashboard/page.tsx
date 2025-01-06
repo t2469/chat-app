@@ -40,10 +40,8 @@ export default function DashboardPage() {
 
     return (
         <Layout>
-            <div className="flex h-screen bg-gray-900 text-white">
-                <Sidebar servers={servers} onServerCreated={handleServerCreated} />
-                <MainContent servers={servers} fetchServers={fetchServers} />
-            </div>
+            <Sidebar servers={servers} onServerCreated={handleServerCreated} />
+            <MainContent servers={servers} fetchServers={fetchServers} />
         </Layout>
     );
 }

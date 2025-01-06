@@ -1,3 +1,4 @@
+// components/Sidebar/Sidebar.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -23,7 +24,7 @@ export default function Sidebar({ servers, onServerCreated }: Props) {
 
     return (
         <>
-            <aside className="w-20 bg-gray-800 py-4 flex flex-col items-center space-y-4">
+            <aside className="w-20 bg-gray-800 py-4 flex flex-col items-center space-y-4 overflow-y-auto scrollbar-hide">
                 {servers.map((server) => (
                     <Link href={`/servers/${server.id}`} key={server.id}>
                         <div
@@ -41,8 +42,8 @@ export default function Sidebar({ servers, onServerCreated }: Props) {
                                 />
                             ) : (
                                 <span className="text-white text-sm font-bold">
-                                    {server.name.charAt(0).toUpperCase()}
-                                </span>
+                  {server.name.charAt(0).toUpperCase()}
+                </span>
                             )}
                         </div>
                     </Link>
@@ -53,12 +54,14 @@ export default function Sidebar({ servers, onServerCreated }: Props) {
                     onClick={toggleModal}
                     className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
                 >
-                    <span className="text-green-500 text-2xl">+</span>
+                    <span className="text-white text-2xl">+</span>
                 </button>
             </aside>
 
             {/* サーバー作成モーダル */}
-            {isModalOpen && <CreateServerModal onClose={toggleModal} onServerCreated={onServerCreated} />}
+            {isModalOpen && (
+                <CreateServerModal onClose={toggleModal} onServerCreated={onServerCreated} />
+            )}
         </>
     );
 }

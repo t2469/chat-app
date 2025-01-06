@@ -34,37 +34,20 @@ export default function MainContent({ servers, fetchServers }: Props) {
     };
 
     return (
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 flex flex-col p-6 bg-gray-900">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl">ようこそ！</h1>
+                <h1 className="text-2xl text-white">ようこそ！</h1>
                 <ProfilePopup />
             </div>
 
-            {/*<div className="mb-6">*/}
-            {/*    <h2 className="text-xl mb-2">サーバー一覧</h2>*/}
-            {/*    <ul>*/}
-            {/*        {servers.map((server) => (*/}
-            {/*            <li key={server.id} className="mb-2 flex items-center justify-between">*/}
-            {/*                <span>{server.name}</span>*/}
-            {/*                {server.is_member ? (*/}
-            {/*                    <button*/}
-            {/*                        onClick={() => handleLeave(server.id)}*/}
-            {/*                        className="bg-red-500 px-2 py-1 rounded hover:bg-red-600 transition"*/}
-            {/*                    >*/}
-            {/*                        脱退*/}
-            {/*                    </button>*/}
-            {/*                ) : (*/}
-            {/*                    <button*/}
-            {/*                        onClick={() => handleJoin(server.id)}*/}
-            {/*                        className="bg-green-500 px-2 py-1 rounded hover:bg-green-600 transition"*/}
-            {/*                    >*/}
-            {/*                        参加*/}
-            {/*                    </button>*/}
-            {/*                )}*/}
-            {/*            </li>*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*</div>*/}
+            {/* チャットエリア */}
+            <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar">
+                {/* 仮のチャットメッセージ */}
+                <div className="text-white mb-2">チャットメッセージ1</div>
+                <div className="text-white mb-2">チャットメッセージ2</div>
+                <div className="text-white mb-2">チャットメッセージ3</div>
+                {/* 必要に応じてメッセージを追加 */}
+            </div>
         </main>
     );
 }
