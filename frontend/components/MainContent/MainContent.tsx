@@ -3,7 +3,6 @@
 import React from 'react';
 import { Server } from '@/app/types/server';
 import ProfilePopup from '@/components/ProfilePopup';
-import CreateServerForm from '@/components/Server/CreateServerForm';
 import api from "@/utils/api";
 
 type Props = {
@@ -41,33 +40,31 @@ export default function MainContent({ servers, fetchServers }: Props) {
                 <ProfilePopup />
             </div>
 
-            <div className="mb-6">
-                <h2 className="text-xl mb-2">サーバー一覧</h2>
-                <ul>
-                    {servers.map((server) => (
-                        <li key={server.id} className="mb-2 flex items-center justify-between">
-                            <span>{server.name}</span>
-                            {server.is_member ? (
-                                <button
-                                    onClick={() => handleLeave(server.id)}
-                                    className="bg-red-500 px-2 py-1 rounded hover:bg-red-600 transition"
-                                >
-                                    脱退
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => handleJoin(server.id)}
-                                    className="bg-green-500 px-2 py-1 rounded hover:bg-green-600 transition"
-                                >
-                                    参加
-                                </button>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <CreateServerForm onServerCreated={() => fetchServers()} />
+            {/*<div className="mb-6">*/}
+            {/*    <h2 className="text-xl mb-2">サーバー一覧</h2>*/}
+            {/*    <ul>*/}
+            {/*        {servers.map((server) => (*/}
+            {/*            <li key={server.id} className="mb-2 flex items-center justify-between">*/}
+            {/*                <span>{server.name}</span>*/}
+            {/*                {server.is_member ? (*/}
+            {/*                    <button*/}
+            {/*                        onClick={() => handleLeave(server.id)}*/}
+            {/*                        className="bg-red-500 px-2 py-1 rounded hover:bg-red-600 transition"*/}
+            {/*                    >*/}
+            {/*                        脱退*/}
+            {/*                    </button>*/}
+            {/*                ) : (*/}
+            {/*                    <button*/}
+            {/*                        onClick={() => handleJoin(server.id)}*/}
+            {/*                        className="bg-green-500 px-2 py-1 rounded hover:bg-green-600 transition"*/}
+            {/*                    >*/}
+            {/*                        参加*/}
+            {/*                    </button>*/}
+            {/*                )}*/}
+            {/*            </li>*/}
+            {/*        ))}*/}
+            {/*    </ul>*/}
+            {/*</div>*/}
         </main>
     );
 }

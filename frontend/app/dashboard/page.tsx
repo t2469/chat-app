@@ -32,12 +32,16 @@ export default function DashboardPage() {
         }
     };
 
+    const handleServerCreated = () => {
+        fetchServers();
+    };
+
     if (!user) return <div>Loading...</div>;
 
     return (
         <Layout>
             <div className="flex h-screen bg-gray-900 text-white">
-                <Sidebar servers={servers} />
+                <Sidebar servers={servers} onServerCreated={handleServerCreated} />
                 <MainContent servers={servers} fetchServers={fetchServers} />
             </div>
         </Layout>
