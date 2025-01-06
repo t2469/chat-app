@@ -1,16 +1,19 @@
 'use client';
 
-import React from 'react';
-import { Server } from '@/app/types/server';
-import ProfilePopup from '@/components/ProfilePopup';
+import React, {useContext} from 'react';
 import api from "@/utils/api";
+import {Server} from '@/app/types/server';
+import ProfilePopup from '@/components/ProfilePopup';
+import {AuthContext} from '@/context/AuthContext';
 
 type Props = {
     servers: Server[];
     fetchServers: () => void;
 };
 
-export default function MainContent({ servers, fetchServers }: Props) {
+export default function MainContent({servers, fetchServers}: Props) {
+    const {user} = useContext(AuthContext);
+
     const handleJoin = async (serverId: string) => {
         try {
             const response = await api.post(`/servers/${serverId}/join`);
@@ -36,8 +39,8 @@ export default function MainContent({ servers, fetchServers }: Props) {
     return (
         <main className="flex-1 flex flex-col p-6 bg-gray-900">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl text-white">ようこそ！</h1>
-                <ProfilePopup />
+                <h1 className="text-2xl text-white">こんにちは、{user?.username}さん</h1>
+                <ProfilePopup/>
             </div>
 
             {/* チャットエリア */}
@@ -46,7 +49,6 @@ export default function MainContent({ servers, fetchServers }: Props) {
                 <div className="text-white mb-2">チャットメッセージ1</div>
                 <div className="text-white mb-2">チャットメッセージ2</div>
                 <div className="text-white mb-2">チャットメッセージ3</div>
-                {/* 必要に応じてメッセージを追加 */}
             </div>
         </main>
     );
