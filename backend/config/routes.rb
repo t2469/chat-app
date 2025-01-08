@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     post 'signup', to: 'authentication#signup'
     post 'login', to: 'authentication#login'
     resource :user, only: [:show]
-    resources :servers, only: [:index, :create] do
+    resources :servers do
+      resources :channels do
+        resources :messages, only: [:index, :create]
+      end
       collection do
         get :my_servers
       end
