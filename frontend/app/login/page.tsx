@@ -21,7 +21,7 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             await login(form.email, form.password);
-            router.push('/dashboard');
+            router.push('/servers');
         } catch (error) {
             alert('ログインに失敗しました。メールアドレスまたはパスワードが間違っています。');
         }

@@ -6,7 +6,7 @@ export const metadata = {
     description: 'A Discord-like real-time chat application',
 }
 
-const RootLayout = ({children}: { children: React.ReactNode }) => {
+export default function RootLayout({children,}: { children: React.ReactNode; }) {
     return (
         <html lang="ja">
         <body>
@@ -16,6 +16,4 @@ const RootLayout = ({children}: { children: React.ReactNode }) => {
         </body>
         </html>
     );
-};
-
-export default RootLayout;
+}
