@@ -15,5 +15,6 @@
     <orderEntry type="library" scope="PROVIDED" name="bundler (v2.4.17, ruby-2.6.10-p210) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jwt (v2.9.3, ruby-2.6.10-p210) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rake (v12.3.3, ruby-2.6.10-p210) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="redis (v4.8.1, ruby-2.6.10-p210) [gem]" level="application" />
   </component>
 </module>
