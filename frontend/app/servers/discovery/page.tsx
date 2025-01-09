@@ -4,13 +4,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import api from '@/utils/api';
 import { Server } from '@/app/types/server';
 import { ServerUpdateContext } from '../context/ServerUpdateContext';
+import { joinServer } from '@/app/services/serverRequests';
 
 export default function ServerDiscoveryPage() {
     const [allServers, setAllServers] = useState<Server[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Context からサーバー再取得関数を取得
+    // サイドバー更新用
     const refreshSidebarServers = useContext(ServerUpdateContext);
 
     useEffect(() => {
@@ -41,15 +42,10 @@ export default function ServerDiscoveryPage() {
             <h1 className="text-xl font-bold mb-4">サーバー一覧</h1>
             <ul className="space-y-2">
                 {allServers
-                    .filter((server) => !server.is_member)
-                    .map((server) => (
+                    .filter((server) => !server.is_member).map((server) => (
                         <li
                             key={server.id}
-                            className="
-                                p-2 bg-gray-800 rounded
-                                hover:bg-gray-700 transition-colors
-                                flex items-center
-                            "
+                            className="p-2 bg-gray-800 rounded hover:bg-gray-700 transition-colors flex items-center"
                         >
                             {/* サーバー名（横スクロール） */}
                             <div
@@ -61,12 +57,8 @@ export default function ServerDiscoveryPage() {
                                     min-w-0
                                 "
                             >
-                                <h2 className="text-lg font-semibold">
-                                    {server.name}
-                                </h2>
-                                <p className="text-sm text-gray-400">
-                                    ID: {server.id}
-                                </p>
+                                <h2 className="text-lg font-semibold">{server.name}</h2>
+                                <p className="text-sm text-gray-400">ID: {server.id}</p>
                             </div>
 
                             {/* 参加ボタン */}
@@ -78,7 +70,7 @@ export default function ServerDiscoveryPage() {
                                 "
                                 onClick={async () => {
                                     try {
-                                        await api.post(`/servers/${server.id}/join`);
+                                        await joinServer(server.id);
                                         alert(`${server.name} に参加しました`);
 
                                         // ローカルリストから削除して、画面から消す
