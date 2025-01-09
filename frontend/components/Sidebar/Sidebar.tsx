@@ -23,7 +23,8 @@ export default function Sidebar({servers, onServerCreated}: Props) {
 
     return (
         <>
-            <aside className="h-screen w-20 flex-shrink-0 bg-gray-800 py-4 flex flex-col items-center space-y-4 overflow-y-auto scrollbar-hide">
+            <aside
+                className="h-screen w-20 flex-shrink-0 bg-gray-800 py-4 flex flex-col items-center space-y-4 overflow-y-auto scrollbar-hide">
                 {/* サーバーアイコン */}
                 {servers.map((server) => (
                     <Link href={`/servers/${server.id}`} key={server.id}>
@@ -42,20 +43,31 @@ export default function Sidebar({servers, onServerCreated}: Props) {
                                 />
                             ) : (
                                 <span className="text-white text-sm font-bold">
-                  {server.name.charAt(0).toUpperCase()}
-                </span>
+                                    {server.name.charAt(0).toUpperCase()}
+                                </span>
                             )}
                         </div>
                     </Link>
                 ))}
 
-                {/* サーバー作成フォームの"+" ボタン */}
+                {/* サーバー作成フォームの "+" ボタン */}
                 <button
                     onClick={toggleModal}
                     className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors flex-shrink-0"
                 >
                     <span className="text-green-500 text-2xl">+</span>
                 </button>
+
+                <Link
+                    href="/servers/discovery"
+                    className="
+                        w-12 h-12 bg-blue-700 rounded-full
+                        flex items-center justify-center
+                        hover:bg-blue-600 transition-colors flex-shrink-0
+                    "
+                >
+                    <span className="text-blue-400 text-lg">🔍</span>
+                </Link>
             </aside>
 
             {/* サーバー作成モーダル */}
