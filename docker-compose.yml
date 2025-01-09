@@ -7,8 +7,10 @@ services:
       - ./backend:/app
     depends_on:
       - db
+    environment:
+      - APP_ENV=${APP_ENV:-development}
     env_file:
-      - ./backend/.env.${APP_ENV}
+      - ./backend/.env.${APP_ENV:-development}
     ports:
       - "3000:3000"
     networks:
@@ -22,8 +24,10 @@ services:
       - "8000:3000"
     depends_on:
       - backend
+    environment:
+      - APP_ENV=${APP_ENV:-development}
     env_file:
-      - ./frontend/.env.${APP_ENV}
+      - ./frontend/.env.${APP_ENV:-development}
     networks:
       - app-network
 

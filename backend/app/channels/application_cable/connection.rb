@@ -25,7 +25,7 @@ module ApplicationCable
     end
 
     def decode_token(token)
-      secret_key = Rails.application.credentials.secret_key_base
+      secret_key = ENV['JWT_SECRET_KEY']
       decoded_array = JWT.decode(token, secret_key, true, { algorithm: 'HS256' })
       decoded_array.first
     end

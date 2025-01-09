@@ -28,8 +28,15 @@ export const useChannelMessages = (serverId: number, channelId: number) => {
             return;
         }
 
-        const cableUrl = process.env.NEXT_PUBLIC_CABLE_URL || `ws://localhost:3000/cable?token=${token}`;
-        cableRef.current = createConsumer(cableUrl);
+        const cableUrl = process.env.NEXT_PUBLIC_CABLE_URL;
+        if (!cableUrl) {
+            console.error('NEXT_PUBLIC_CABLE_URL is not set');
+            setError('WebSocketのURLが設定されていません。');
+            setLoading(false);
+            return;
+        }
+
+        cableRef.current = createConsumer(`${cableUrl}?token=${token}`);
 
         // WebSocket サブスクリプションの作成
         subscriptionRef.current = cableRef.current.subscriptions.create(
