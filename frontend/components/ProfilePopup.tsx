@@ -30,7 +30,7 @@ const ProfilePopup = () => {
         };
     }, [isOpen]);
 
-    const {user, logout} = useContext(AuthContext);
+    const {logout} = useContext(AuthContext);
     const handleLogout = () => {
         logout();
         router.push('/login');

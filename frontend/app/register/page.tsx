@@ -1,11 +1,11 @@
 'use client';
 
-import React, {useState, useContext} from 'react';
-import {AuthContext} from '@/context/AuthContext';
-import {useRouter} from 'next/navigation';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
-    const {signup} = useContext(AuthContext);
+    const { signup } = useContext(AuthContext);
     const router = useRouter();
 
     const [form, setForm] = useState({
@@ -16,21 +16,23 @@ const RegisterPage = () => {
         avatar_url: '',
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({...form, [e.target.name]: e.target.value});
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (form.password !== form.password_confirmation) {
-            alert('パスワードが一致しません。');
+            setError('パスワードが一致しません。');
             return;
         }
         try {
             await signup(form.username, form.email, form.password);
             router.push('/servers');
-        } catch (error) {
-            alert('登録に失敗しました。');
+        } catch (err: any) {
+            setError('登録に失敗しました。');
         }
     };
 
@@ -74,18 +76,11 @@ const RegisterPage = () => {
                     required
                     className="w-full p-2 mb-2 border rounded text-black"
                 />
-                {/*<input*/}
-                {/*    type="text"*/}
-                {/*    name="avatar_url"*/}
-                {/*    placeholder="アバターURL（任意）"*/}
-                {/*    value={form.avatar_url}*/}
-                {/*    onChange={handleChange}*/}
-                {/*    className="w-full p-2 mb-4 border rounded"*/}
-                {/*/>*/}
                 <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
                     登録
                 </button>
             </form>
+            {error && <p className="text-red-500 mt-2">{error}</p>} {/* エラーメッセージ表示 */}
             <p className="mt-4">
                 すでにアカウントをお持ちですか？{' '}
                 <a href="/login" className="text-blue-500 underline">

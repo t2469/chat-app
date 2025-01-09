@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import api from '@/utils/api';
-import { Server } from '@/app/types/server';
 
 interface CreateServerFormProps {
     onServerCreated: () => void;
@@ -21,13 +20,19 @@ const CreateServerForm: React.FC<CreateServerFormProps> = ({ onServerCreated }) 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await api.post('/servers', { server: form });
+            await api.post('/servers', { server: form });
             alert('サーバーが作成されました。');
             onServerCreated();
             setForm({ name: '', icon_url: '' });
-        } catch (error: any) {
-            console.error('Server creation failed:', error);
-            alert(error.response?.data?.errors?.[0] || 'サーバーの作成に失敗しました。');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Server creation failed:', error);
+                alert('サーバーの作成に失敗しました。');
+            }
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+                const err = error as { response?: { data?: { errors?: string[] } } };
+                alert(err.response?.data?.errors?.[0] || 'サーバーの作成に失敗しました。');
+            }
         }
     };
 

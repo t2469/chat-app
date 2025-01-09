@@ -13,6 +13,8 @@ const LoginPage = () => {
         password: '',
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -22,8 +24,8 @@ const LoginPage = () => {
         try {
             await login(form.email, form.password);
             router.push('/servers');
-        } catch (error) {
-            alert('ログインに失敗しました。メールアドレスまたはパスワードが間違っています。');
+        } catch (err: any) {
+            setError('ログインに失敗しました。メールアドレスまたはパスワードが間違っています。');
         }
     };
 
@@ -53,6 +55,7 @@ const LoginPage = () => {
                     ログイン
                 </button>
             </form>
+            {error && <p className="text-red-500 mt-2">{error}</p>} {/* エラーメッセージ表示 */}
             <p className="mt-4">
                 アカウントをお持ちでないですか？{' '}
                 <a href="/register" className="text-blue-500 underline">

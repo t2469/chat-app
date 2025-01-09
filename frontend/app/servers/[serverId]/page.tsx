@@ -1,12 +1,13 @@
 'use client';
 
-import React, {useContext, useEffect, useState} from 'react';
-import {useParams, useRouter} from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/utils/api';
-import {Server} from '@/app/types/server';
-import {ServerUpdateContext} from '../context/ServerUpdateContext';
-import {leaveServer} from '@/app/services/serverRequests';
+import { Server } from '@/app/types/server';
+import { ServerUpdateContext } from '../context/ServerUpdateContext';
+import { leaveServer } from '@/app/services/serverRequests';
+import { AxiosError } from 'axios';
 
 interface Channel {
     id: number;
@@ -14,7 +15,7 @@ interface Channel {
 }
 
 export default function ServerPage() {
-    const {serverId} = useParams() as { serverId: string };
+    const { serverId } = useParams() as { serverId: string };
     const [server, setServer] = useState<Server | null>(null);
     const [channels, setChannels] = useState<Channel[]>([]);
     const [loading, setLoading] = useState(true);
@@ -56,7 +57,7 @@ export default function ServerPage() {
             alert(`サーバー「${server.name}」を脱退しました。`);
             router.push('/servers'); // 一覧へ移動
             refreshSidebarServers(); // サイドバーの再取得
-        } catch (error: any) {
+        } catch (error: AxiosError) {
             console.error('サーバー脱退エラー:', error);
             alert(
                 error.response?.data?.errors?.join(', ') ||
@@ -72,11 +73,11 @@ export default function ServerPage() {
 
         try {
             const res = await api.post(`/servers/${serverId}/channels`, {
-                channel: {name: newChannelName},
+                channel: { name: newChannelName },
             });
             setChannels((prev) => [...prev, res.data]);
             setNewChannelName('');
-        } catch (error: any) {
+        } catch (error: AxiosError) {
             console.error('Error creating channel:', error);
             alert(
                 error.response?.data?.errors?.join(', ') ||
@@ -149,5 +150,4 @@ export default function ServerPage() {
             </form>
         </div>
     );
-
 }

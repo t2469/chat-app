@@ -6,20 +6,13 @@ import {AuthContext} from '@/context/AuthContext';
 import api from '@/utils/api';
 import {useChannelMessages} from '@/hooks/useChannelMessages';
 import {format} from 'date-fns';
-
-interface Message {
-    id: number;
-    content: string;
-    user_id: number;
-    username: string;
-    created_at: string;
-}
+import {Server} from '@/app/types/server';
 
 export default function ChannelChatPage() {
     const {serverId, channelId} = useParams() as { serverId: string; channelId: string };
     const {user} = useContext(AuthContext);
 
-    const [server, setServer] = useState<any>(null);
+    const [server, setServer] = useState<Server | null>(null);
     const {messages, sendMessage, loading, error} = useChannelMessages(Number(serverId), Number(channelId));
     const [input, setInput] = useState<string>('');
 
@@ -29,25 +22,15 @@ export default function ChannelChatPage() {
         // サーバー情報の取得
         const fetchServer = async () => {
             try {
-                const res = await api.get(`/servers/${serverId}`);
-                setServer(res.data);
-            } catch (error) {
-                console.error('Error fetching server:', error);
-            }
-        };
-
-        // チャンネル情報の取得
-        const fetchChannel = async () => {
-            try {
-                const res = await api.get(`/servers/${serverId}/channels/${channelId}`);
-            } catch (error) {
-                console.error('Error fetching channel:', error);
+                const response = await api.get<Server>(`/servers/${serverId}`);
+                setServer(response.data);
+            } catch (err) {
+                console.error('Error fetching server:', err);
             }
         };
 
         fetchServer();
-        fetchChannel();
-    }, [serverId, channelId]);
+    }, [serverId]);
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,17 +39,17 @@ export default function ChannelChatPage() {
         try {
             await sendMessage(input);
             setInput('');
-        } catch (error: any) {
-            console.error('Error sending message:', error);
-            alert(error.response?.data?.errors?.join(', ') || 'メッセージ送信に失敗しました。');
+        } catch (err: unknown) {
+            console.error('Error sending message:', err);
+            alert('メッセージ送信に失敗しました。');
         }
     };
 
-    useEffect(()=>{
-        if(messagesEndRef.current){
+    useEffect(() => {
+        if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({behavior: 'smooth'});
         }
-    },[messages]);
+    }, [messages]);
 
     return (
         <main className="flex flex-col p-6 bg-gray-900 min-h-screen w-full text-white">
@@ -77,7 +60,7 @@ export default function ChannelChatPage() {
             </div>
 
             {/* メッセージ表示領域 */}
-            <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar mb-4 " >
+            <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar mb-4">
                 {loading && <p>メッセージを読み込み中...</p>}
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && messages.length === 0 && <p>まだメッセージがありません。</p>}
@@ -91,15 +74,11 @@ export default function ChannelChatPage() {
                             key={msg.id}
                             className={`mb-6 flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                         >
-                            {/*名前と送信時間を "メッセージのすぐ上" に置くため、一つのコンテナ(div) にまとめる*/}
                             <div className="max-w-2xl px-3">
-                                {/* 送信者の名前と送信時間をメッセージの表示 */}
                                 <div className={`text-sm mb-1 ${isOwnMessage ? 'text-right' : 'text-left'}`}>
                                     <span className="font-semibold">{msg.username}</span>
                                     <span className="ml-2 text-xs text-gray-400">{formattedTime}</span>
                                 </div>
-
-                                {/* メッセージ本体 */}
                                 <div
                                     className={`hover:bg-gray-600 transition-colors p-3 rounded-lg break-words w-full ${
                                         isOwnMessage ? 'bg-gray-700 text-white' : 'bg-gray-700 text-white'
@@ -111,7 +90,7 @@ export default function ChannelChatPage() {
                         </div>
                     );
                 })}
-                <div ref={messagesEndRef} /> {/* スクロール先の目印 */}
+                <div ref={messagesEndRef} />
             </div>
 
             {/* メッセージ送信用フォーム */}
