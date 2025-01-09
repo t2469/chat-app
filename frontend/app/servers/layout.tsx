@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import ProfilePopup from '@/components/ProfilePopup';
 import api from '@/utils/api';
 import { Server } from '@/app/types/server';
 
@@ -44,6 +45,10 @@ export default function ServersLayout({ children }: { children: React.ReactNode 
             { /* メイン表示部分 */}
             <div className="flex-1 h-full overflow-auto custom-scrollbar">
                 {children}
+            </div>
+            {/* プロファイルポップアップ */}
+            <div className="absolute top-4 right-4">
+                <ProfilePopup />
             </div>
         </div>
     );

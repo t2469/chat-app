@@ -4,7 +4,6 @@ import React, {useContext, useEffect, useState, useRef} from 'react';
 import {useParams} from 'next/navigation';
 import {AuthContext} from '@/context/AuthContext';
 import api from '@/utils/api';
-import ProfilePopup from '@/components/ProfilePopup';
 import {useChannelMessages} from '@/hooks/useChannelMessages';
 import {format} from 'date-fns';
 
@@ -75,7 +74,6 @@ export default function ChannelChatPage() {
                 <h1 className="text-2xl">
                     {server ? `# ${server.name}` : 'Loading...'}, こんにちは、{user?.username}さん
                 </h1>
-                <ProfilePopup/>
             </div>
 
             {/* メッセージ表示領域 */}
