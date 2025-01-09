@@ -1,4 +1,3 @@
-// app/servers/[serverId]/channels/[channelId]/page.tsx
 'use client';
 
 import React, { useEffect, useState, useContext } from 'react';
@@ -21,7 +20,7 @@ export default function ChannelChatPage() {
     const { user } = useContext(AuthContext);
 
     const [server, setServer] = useState<any>(null); // Server型に適宜変更
-    const { messages, sendMessage } = useChannelMessages(Number(channelId));
+    const { messages, sendMessage, loading, error } = useChannelMessages(Number(serverId), Number(channelId)); // serverId を渡す
     const [input, setInput] = useState<string>('');
 
     useEffect(() => {
@@ -74,6 +73,9 @@ export default function ChannelChatPage() {
 
             {/* メッセージ表示領域 */}
             <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar mb-4">
+                {loading && <p>メッセージを読み込み中...</p>}
+                {error && <p className="text-red-500">{error}</p>}
+                {!loading && !error && messages.length === 0 && <p>まだメッセージがありません。</p>}
                 {messages.map((msg) => (
                     <div key={msg.id} className="text-white mb-2">
                         <strong>{msg.username}: </strong>{msg.content}

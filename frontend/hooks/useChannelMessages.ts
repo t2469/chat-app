@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createConsumer, Cable, Channel } from '@rails/actioncable';
+import api from '@/utils/api';
 
 interface Message {
     id: number;
@@ -11,8 +12,10 @@ interface Message {
     created_at: string;
 }
 
-export const useChannelMessages = (channelId: number) => {
+export const useChannelMessages = (serverId: number, channelId: number) => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const cableRef = useRef<Cable | null>(null);
     const subscriptionRef = useRef<Channel | null>(null);
 
@@ -20,12 +23,15 @@ export const useChannelMessages = (channelId: number) => {
         const token = localStorage.getItem('token');
         if (!token) {
             console.error('JWT token not found');
+            setError('認証トークンが見つかりません。');
+            setLoading(false);
             return;
         }
 
         const cableUrl = process.env.NEXT_PUBLIC_CABLE_URL || `ws://localhost:3000/cable?token=${token}`;
         cableRef.current = createConsumer(cableUrl);
 
+        // WebSocket サブスクリプションの作成
         subscriptionRef.current = cableRef.current.subscriptions.create(
             { channel: 'ChannelMessagesChannel', channel_id: channelId },
             {
@@ -44,6 +50,21 @@ export const useChannelMessages = (channelId: number) => {
             }
         );
 
+        // 既存のメッセージを取得
+        const fetchMessages = async () => {
+            try {
+                const res = await api.get(`/servers/${serverId}/channels/${channelId}/messages`);
+                setMessages(res.data);
+                setLoading(false);
+            } catch (error: any) {
+                console.error('Error fetching messages:', error);
+                setError('メッセージの取得に失敗しました。');
+                setLoading(false);
+            }
+        };
+
+        fetchMessages();
+
         return () => {
             if (subscriptionRef.current) {
                 subscriptionRef.current.unsubscribe();
@@ -52,7 +73,7 @@ export const useChannelMessages = (channelId: number) => {
                 cableRef.current.disconnect();
             }
         };
-    }, [channelId]);
+    }, [serverId, channelId]);
 
     const sendMessage = (content: string) => {
         if (subscriptionRef.current) {
@@ -60,5 +81,5 @@ export const useChannelMessages = (channelId: number) => {
         }
     };
 
-    return { messages, sendMessage };
+    return { messages, sendMessage, loading, error };
 };
