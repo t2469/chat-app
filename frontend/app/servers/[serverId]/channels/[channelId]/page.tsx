@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {useParams} from 'next/navigation';
 import {AuthContext} from '@/context/AuthContext';
 import api from '@/utils/api';
@@ -23,6 +23,8 @@ export default function ChannelChatPage() {
     const [server, setServer] = useState<any>(null);
     const {messages, sendMessage, loading, error} = useChannelMessages(Number(serverId), Number(channelId));
     const [input, setInput] = useState<string>('');
+
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         // サーバー情報の取得
@@ -60,6 +62,12 @@ export default function ChannelChatPage() {
             alert(error.response?.data?.errors?.join(', ') || 'メッセージ送信に失敗しました。');
         }
     };
+
+    useEffect(()=>{
+        if(messagesEndRef.current){
+            messagesEndRef.current.scrollIntoView({behavior: 'smooth'});
+        }
+    },[messages]);
 
     return (
         <main className="flex flex-col p-6 bg-gray-900 min-h-screen w-full text-white">
@@ -105,6 +113,7 @@ export default function ChannelChatPage() {
                         </div>
                     );
                 })}
+                <div ref={messagesEndRef} /> {/* スクロール先の目印 */}
             </div>
 
             {/* メッセージ送信用フォーム */}

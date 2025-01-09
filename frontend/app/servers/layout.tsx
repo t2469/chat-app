@@ -38,11 +38,13 @@ export default function ServersLayout({ children }: { children: React.ReactNode 
     }
 
     return (
-        <div className="h-screen flex">
+        <div className="flex h-screen bg-gray-900 text-white">
             {/* サイドバー */}
-            <Sidebar servers={servers} onServerCreated={handleServerCreated} />
-            {/* メイン表示部分 */}
-            <div className="flex-1">{children}</div>
+            <Sidebar servers={servers} onServerCreated={handleServerCreated}/>
+            { /* メイン表示部分 */}
+            <div className="flex-1 h-full overflow-auto custom-scrollbar">
+                {children}
+            </div>
         </div>
     );
 }

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Server } from '@/app/types/server';
+import React, {useState} from 'react';
+import {Server} from '@/app/types/server';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import {usePathname} from 'next/navigation';
 import CreateServerModal from '../Server/CreateServerModal';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
     onServerCreated: () => void;
 };
 
-export default function Sidebar({ servers, onServerCreated }: Props) {
+export default function Sidebar({servers, onServerCreated}: Props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const pathname = usePathname();
     const activeServerId = pathname.split('/')[2];
@@ -23,7 +23,7 @@ export default function Sidebar({ servers, onServerCreated }: Props) {
 
     return (
         <>
-            <aside className="w-20 bg-gray-800 py-4 flex flex-col items-center space-y-4 overflow-y-auto scrollbar-hide h-full">
+            <aside className="h-screen w-20 flex-shrink-0 bg-gray-800 py-4 flex flex-col items-center space-y-4 overflow-y-auto scrollbar-hide">
                 {/* サーバーアイコン */}
                 {servers.map((server) => (
                     <Link href={`/servers/${server.id}`} key={server.id}>
@@ -60,7 +60,7 @@ export default function Sidebar({ servers, onServerCreated }: Props) {
 
             {/* サーバー作成モーダル */}
             {isModalOpen && (
-                <CreateServerModal onClose={toggleModal} onServerCreated={onServerCreated} />
+                <CreateServerModal onClose={toggleModal} onServerCreated={onServerCreated}/>
             )}
         </>
     );
