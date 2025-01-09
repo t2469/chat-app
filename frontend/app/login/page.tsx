@@ -24,8 +24,8 @@ const LoginPage = () => {
         try {
             await login(form.email, form.password);
             router.push('/servers');
-        } catch (err: any) {
-            setError('ログインに失敗しました。メールアドレスまたはパスワードが間違っています。');
+        } catch {
+            alert('ログインに失敗しました。');
         }
     };
 

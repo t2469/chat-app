@@ -57,12 +57,14 @@ export default function ServerPage() {
             alert(`サーバー「${server.name}」を脱退しました。`);
             router.push('/servers'); // 一覧へ移動
             refreshSidebarServers(); // サイドバーの再取得
-        } catch (error: AxiosError) {
-            console.error('サーバー脱退エラー:', error);
-            alert(
-                error.response?.data?.errors?.join(', ') ||
-                'サーバー脱退に失敗しました。'
-            );
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                console.error('サーバー脱退エラー:', error);
+                alert(
+                    error.response?.data?.errors?.join(', ') ||
+                    'サーバー脱退に失敗しました。'
+                );
+            }
         }
     };
 
@@ -77,14 +79,17 @@ export default function ServerPage() {
             });
             setChannels((prev) => [...prev, res.data]);
             setNewChannelName('');
-        } catch (error: AxiosError) {
-            console.error('Error creating channel:', error);
-            alert(
-                error.response?.data?.errors?.join(', ') ||
-                'チャンネル作成に失敗しました。'
-            );
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                console.error('Error creating channel:', error);
+                alert(
+                    error.response?.data?.errors?.join(', ') ||
+                    'チャンネル作成に失敗しました。'
+                );
+            }
         }
     };
+
 
     if (loading) {
         return <div className="p-4 text-white">Loading...</div>;
