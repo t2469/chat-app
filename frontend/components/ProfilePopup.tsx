@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState, useRef, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {AuthContext} from "@/context/AuthContext";
 
@@ -49,18 +49,6 @@ const ProfilePopup = () => {
                     className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50"
                 >
                     <ul className="text-sm text-gray-700">
-                        <li
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => router.push('/profile/edit')}
-                        >
-                            プロフィール編集
-                        </li>
-                        <li
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => router.push('/account/settings')}
-                        >
-                            アカウント管理
-                        </li>
                         <li
                             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                             onClick={handleLogout}>
