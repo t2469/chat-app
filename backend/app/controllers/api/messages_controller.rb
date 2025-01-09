@@ -6,8 +6,16 @@ module Api
 
     # GET /api/servers/:server_id/channels/:channel_id/messages
     def index
-      @messages = @channel.messages.includes(:user).order(created_at: :asc)
-      render json: @messages.as_json(include: { user: { only: [:id, :username] } }), status: :ok
+      messages = @channel.messages.includes(:user).order(created_at: :asc).map do |msg|
+        {
+          id: msg.id,
+          content: msg.content,
+          user_id: msg.user_id,
+          username: msg.user.username,
+          created_at: msg.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        }
+      end
+      render json: messages, status: :ok
     end
 
     # POST /api/servers/:server_id/channels/:channel_id/messages
@@ -15,7 +23,7 @@ module Api
       @message = @channel.messages.new(message_params)
       @message.user = current_user
       if @message.save
-        # Action Cableでブロードキャスト（リアルタイム機能がある場合）
+        # Action Cableでブロードキャスト
         ChannelMessagesChannel.broadcast_to(@channel, {
           id: @message.id,
           content: @message.content,

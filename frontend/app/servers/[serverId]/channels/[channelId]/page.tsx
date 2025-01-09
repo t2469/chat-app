@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'next/navigation';
-import { AuthContext } from '@/context/AuthContext';
+import React, {useContext, useEffect, useState} from 'react';
+import {useParams} from 'next/navigation';
+import {AuthContext} from '@/context/AuthContext';
 import api from '@/utils/api';
 import ProfilePopup from '@/components/ProfilePopup';
-import { useChannelMessages } from '@/hooks/useChannelMessages';
+import {useChannelMessages} from '@/hooks/useChannelMessages';
+import {format} from 'date-fns';
 
 interface Message {
     id: number;
@@ -16,11 +17,11 @@ interface Message {
 }
 
 export default function ChannelChatPage() {
-    const { serverId, channelId } = useParams() as { serverId: string; channelId: string };
-    const { user } = useContext(AuthContext);
+    const {serverId, channelId} = useParams() as { serverId: string; channelId: string };
+    const {user} = useContext(AuthContext);
 
-    const [server, setServer] = useState<any>(null); // Server型に適宜変更
-    const { messages, sendMessage, loading, error } = useChannelMessages(Number(serverId), Number(channelId)); // serverId を渡す
+    const [server, setServer] = useState<any>(null);
+    const {messages, sendMessage, loading, error} = useChannelMessages(Number(serverId), Number(channelId));
     const [input, setInput] = useState<string>('');
 
     useEffect(() => {
@@ -34,11 +35,10 @@ export default function ChannelChatPage() {
             }
         };
 
-        // チャンネル情報の取得（必要に応じて）
+        // チャンネル情報の取得
         const fetchChannel = async () => {
             try {
                 const res = await api.get(`/servers/${serverId}/channels/${channelId}`);
-                // チャンネル情報が必要ならセット
             } catch (error) {
                 console.error('Error fetching channel:', error);
             }
@@ -53,7 +53,6 @@ export default function ChannelChatPage() {
         if (!input.trim()) return;
 
         try {
-            // メッセージの送信
             await sendMessage(input);
             setInput('');
         } catch (error: any) {
@@ -68,19 +67,44 @@ export default function ChannelChatPage() {
                 <h1 className="text-2xl">
                     {server ? `# ${server.name}` : 'Loading...'}, こんにちは、{user?.username}さん
                 </h1>
-                <ProfilePopup />
+                <ProfilePopup/>
             </div>
 
             {/* メッセージ表示領域 */}
-            <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar mb-4">
+            <div className="flex-1 bg-gray-800 rounded p-4 overflow-y-auto custom-scrollbar mb-4 " >
                 {loading && <p>メッセージを読み込み中...</p>}
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && messages.length === 0 && <p>まだメッセージがありません。</p>}
-                {messages.map((msg) => (
-                    <div key={msg.id} className="text-white mb-2">
-                        <strong>{msg.username}: </strong>{msg.content}
-                    </div>
-                ))}
+
+                {messages.map((msg) => {
+                    const isOwnMessage = msg.user_id === user?.id;
+                    const formattedTime = format(new Date(msg.created_at), 'yyyy/MM/dd HH:mm');
+
+                    return (
+                        <div
+                            key={msg.id}
+                            className={`mb-6 flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                        >
+                            {/*名前と送信時間を "メッセージのすぐ上" に置くため、一つのコンテナ(div) にまとめる*/}
+                            <div className="max-w-2xl px-3">
+                                {/* 送信者の名前と送信時間をメッセージの表示 */}
+                                <div className={`text-sm mb-1 ${isOwnMessage ? 'text-right' : 'text-left'}`}>
+                                    <span className="font-semibold">{msg.username}</span>
+                                    <span className="ml-2 text-xs text-gray-400">{formattedTime}</span>
+                                </div>
+
+                                {/* メッセージ本体 */}
+                                <div
+                                    className={`hover:bg-gray-600 transition-colors p-3 rounded-lg break-words w-full ${
+                                        isOwnMessage ? 'bg-gray-700 text-white' : 'bg-gray-700 text-white'
+                                    }`}
+                                >
+                                    <p>{msg.content}</p>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {/* メッセージ送信用フォーム */}
@@ -90,10 +114,14 @@ export default function ChannelChatPage() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="メッセージを入力..."
-                    className="flex-1 bg-gray-700 text-white p-2 rounded-l focus:outline-none"
+                    className="flex-1 bg-gray-700 text-white p-3 rounded-l focus:outline-none focus:ring-2 focus:ring-green-500 transition"
                     required
                 />
-                <button type="submit" className="p-2 bg-green-500 text-white rounded-r hover:bg-green-600 transition">
+                <button
+                    type="submit"
+                    className="p-3 bg-green-500 text-white rounded-r hover:bg-green-600 transition flex items-center justify-center"
+                    aria-label="メッセージを送信"
+                >
                     送信
                 </button>
             </form>
