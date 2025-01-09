@@ -28,8 +28,7 @@ module Api
     end
 
     def encode_token(payload)
-      JWT.encode(payload, Rails.application.credentials.secret_key_base)
+      JWT.encode(payload, ENV['JWT_SECRET_KEY'])
     end
-
   end
 end

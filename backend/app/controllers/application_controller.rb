@@ -4,16 +4,35 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_request
-    header = request.headers['Authorization']
-    header = header.split(' ').last if header.present?
-    begin
-      decoded = JWT.decode(header, Rails.application.credentials.secret_key_base)[0].with_indifferent_access
-      @current_user = User.find(decoded[:user_id])
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { errors: e.message }, status: :unauthorized
-    rescue JWT::DecodeError => e
-      render json: { errors: e.message }, status: :unauthorized
+    token = request.headers['Authorization']&.split(' ')&.last
+    Rails.logger.debug("Token from header: #{token}")
+
+    if token && (decoded_token = decode_jwt(token))
+      Rails.logger.debug("Decoded Token: #{decoded_token}")
+      @current_user = User.find(decoded_token[:user_id])
+    else
+      Rails.logger.debug("Authentication failed or token missing")
+      render json: { error: 'Unauthorized' }, status: :unauthorized
     end
+  rescue ActiveRecord::RecordNotFound
+    Rails.logger.debug("User not found for ID: #{decoded_token[:user_id]}")
+    render json: { error: 'User not found' }, status: :not_found
+  end
+
+
+  def valid_token?(token)
+    decoded = decode_jwt(token)
+    if decoded && decoded[:user_id]
+      true
+    else
+      false
+    end
+  rescue
+    false
+  end
+
+  def decode_jwt(token)
+    JWT.decode(token, ENV['JWT_SECRET_KEY'], true, algorithm: 'HS256')[0].with_indifferent_access
   end
 
   def current_user
