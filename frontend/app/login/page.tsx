@@ -13,7 +13,7 @@ const LoginPage = () => {
         password: '',
     });
 
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });

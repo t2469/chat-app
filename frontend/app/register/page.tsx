@@ -31,7 +31,7 @@ const RegisterPage = () => {
         try {
             await signup(form.username, form.email, form.password);
             router.push('/servers');
-        } catch (err: any) {
+        } catch {
             setError('登録に失敗しました。');
         }
     };
