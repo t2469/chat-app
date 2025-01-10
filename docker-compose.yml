@@ -30,6 +30,7 @@ services:
       - ./frontend/.env.${APP_ENV:-development}
     networks:
       - app-network
+    command: [ "npm", "run", "dev", "--", "-H", "0.0.0.0" ]
 
   db:
     image: mysql:8.0
