@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { createConsumer, Cable, Channel } from '@rails/actioncable';
+
 import api from '@/utils/api';
 
 interface Message {
@@ -63,8 +64,8 @@ export const useChannelMessages = (serverId: number, channelId: number) => {
                 const res = await api.get(`/servers/${serverId}/channels/${channelId}/messages`);
                 setMessages(res.data);
                 setLoading(false);
-            } catch (error: any) {
-                console.error('Error fetching messages:', error);
+            } catch (err: unknown) {
+                console.error('Error fetching messages:', err);
                 setError('メッセージの取得に失敗しました。');
                 setLoading(false);
             }
