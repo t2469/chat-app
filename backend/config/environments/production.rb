@@ -42,7 +42,7 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -87,9 +87,7 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-  nfig.action_cable.url = "wss://13.114.232.178.com/cable"
-  config.action_cable.allowed_request_origins = [
-    'http://13.114.232.178.com',
-    'http://www.13.114.232.178.com'
-  ]
+  config.action_cable.url = "ws://13.114.232.178/cable"
+  config.action_cable.allowed_request_origins = ['http://13.114.232.178', 'https://13.114.232.178']
+
 end
