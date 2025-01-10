@@ -1,4 +1,36 @@
 services:
+  backend:
+    build:
+      context: ./backend
+    container_name: rails-backend
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+    env_file:
+      - ./backend/.env.${APP_ENV:-development}
+    expose:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: nextjs-frontend
+    ports:
+      - "8000:3000"
+    depends_on:
+      - backend
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+    env_file:
+      - ./frontend/.env.${APP_ENV:-development}
+    networks:
+      - app-network
+
   db:
     image: mysql:8.0
     container_name: mysql-db
@@ -6,48 +38,23 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: app_development
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root_password
     ports:
       - "3306:3306"
     volumes:
       - mysql-db:/var/lib/mysql
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: rails-backend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
-    env_file:
-      - ./backend/.env
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: nextjs-frontend
-    ports:
-      - "8000:3000"
-    volumes:
-      - ./frontend:/usr/src/app
-    working_dir: /usr/src/app
-    command: "npm run dev"
+    networks:
+      - app-network
 
   redis:
     image: redis:6.0
     container_name: redis
     ports:
       - "6379:6379"
-    volumes:
-      - redis-data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
 
 volumes:
   mysql-db:
-    driver: local
-  redis-data:
-    driver: local
