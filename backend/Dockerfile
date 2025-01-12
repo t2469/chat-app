@@ -19,7 +19,7 @@ COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
 # コンテナ起動時に実行させるスクリプト
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
 # Railsサーバーを起動
 CMD ["rails", "server", "-b", "0.0.0.0"]

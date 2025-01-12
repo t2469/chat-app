@@ -8,6 +8,11 @@ export APP_ENV=${APP_ENV:-development}
 export RAILS_ENV=${APP_ENV}
 export RACK_ENV=${APP_ENV}
 
+# デバッグ用: 環境変数を出力
+echo "APP_ENV: $APP_ENV"
+echo "RAILS_ENV: $RAILS_ENV"
+echo "RACK_ENV: $RACK_ENV"
+
 # RailsサーバーのPIDファイルを削除
 rm -f /app/tmp/pids/server.pid
 
