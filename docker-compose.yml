@@ -8,9 +8,11 @@ services:
     depends_on:
       - db
     environment:
-      - APP_ENV=${APP_ENV:-development}
+      - APP_ENV=production
+      - RAILS_ENV=production
+      - RACK_ENV=production
     env_file:
-      - ./backend/.env.${APP_ENV:-development}
+      - ./backend/.env.production
     ports:
       - "3000:3000"
     networks:
@@ -25,9 +27,10 @@ services:
     depends_on:
       - backend
     environment:
-      - APP_ENV=${APP_ENV:-development}
+      - APP_ENV=production
+      - NODE_ENV=production
     env_file:
-      - ./frontend/.env.${APP_ENV:-development}
+      - ./frontend/.env.production
     networks:
       - app-network
 
@@ -37,7 +40,7 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: app_development
+      MYSQL_DATABASE: app_production
     ports:
       - "3306:3306"
     volumes:
