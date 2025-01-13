@@ -1,4 +1,11 @@
 # DiscordLike-app
+URL: http://13.114.232.178:8000/login
+
+### テスト用ユーザー
+
+メールアドレス: test@test
+
+パスワード: test
 
 ## ER図
 User ──< ServerMember >── Server ──< Channel ──< Message
@@ -32,15 +39,3 @@ User ──< ServerMember >── Server ──< Channel ──< Message
 関連付け
 * belongs_to :user
 * belongs_to :channel
-
-### 実装
-* ユーザー認証（サインアップ、ログイン） 
-* ユーザー管理（プロフィール編集）
-* サーバー作成と管理
-* チャンネル作成と管理
-* リアルタイムチャットメッセージの送受信
-* 通知機能
-* 検索機能
-* 設定機能
-* フロントエンドのUI/UX改善
-* テストとデプロイ
