@@ -1,41 +1,49 @@
-# DiscordLike-app
-URL: http://13.114.232.178:8000/login
+# **DiscordLike-app**
 
-### テスト用ユーザー
+リアルタイムのチャット機能を提供するWebアプリケーションです。  
+現在開発中であり、今後さらに多くの機能が追加される予定です。
 
-メールアドレス: test@test
+---
 
-パスワード: test
+## **概要**
 
-## ER図
+このアプリでは、以下の機能をサポートしています：
+
+- **ユーザー認証機能**: サインアップ、ログインが可能
+- **サーバーの作成**: 自分専用のチャットサーバーを作成
+- **チャンネルごとのチャット機能**: 各チャンネルでのメッセージのやり取り
+- **メッセージ送信機能**: リアルタイムでのメッセージ送信と受信
+
+---
+
+## **デモ**
+
+[**ここからアプリへアクセスできます**](http://13.114.232.178:8000/login)
+
+### **テスト用ユーザー**
+
+- **メールアドレス**: `test@test`
+- **パスワード**: `test`
+
+![アプリのスクリーンショット](images/chat_screenshot.png)
+
+---
+
+## **ER図**
+
+以下のER図は、アプリのデータベース設計を表しています：
+
 User ──< ServerMember >── Server ──< Channel ──< Message
 
-### User
-関連付け
-* has_many :server_members
-* has_many :servers, through: :server_members
-* has_many :messages
-* has_many :channels, through: :servers
+---
 
-### Server
-関連付け
-* belongs_to :owner, class_name: 'User'
-* has_many :server_members, dependent: :destroy
-* has_many :users, through: :server_members
-* has_many :channels, dependent: :destroy
+## **使用技術**
 
-### ServerMember
-関連付け
-* belongs_to :user
-* belongs_to :server
+| **カテゴリ**    | **技術スタック**             |
+|-------------|------------------------|
+| **バックエンド**  | Ruby on Rails          |
+| **フロントエンド** | TypeScript / Next.js   |
+| **データベース**  | MySQL / Redis          |
+| **インフラ**    | AWS Lightsail / Docker |
 
-### Channel
-関連付け
-* belongs_to :server
-* has_many :messages, dependent: :destroy
-* has_many :users, through: :messages
 
-### Message
-関連付け
-* belongs_to :user
-* belongs_to :channel
