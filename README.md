@@ -1,4 +1,4 @@
-# **DiscordLike-app**
+# **chat-app**
 
 
 リアルタイムのチャット機能を提供するWebアプリケーション
