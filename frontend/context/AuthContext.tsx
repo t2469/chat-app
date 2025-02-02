@@ -7,8 +7,6 @@ import api from '../utils/api';
 interface User {
     id: number;
     username: string;
-    email: string;
-    avatar_url?: string;
     created_at: string;
     updated_at: string;
 }
@@ -19,8 +17,8 @@ interface User {
 //   User      = ログイン済み
 interface AuthContextType {
     user: User | null | undefined;
-    login: (email: string, password: string) => Promise<void>;
-    signup: (username: string, email: string, password: string) => Promise<void>;
+    login: (username: string, password: string) => Promise<void>;
+    signup: (username: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -55,17 +53,16 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         }
     }, []);
 
-    const login = async (email: string, password: string) => {
-        const response = await api.post('/login', {email, password});
+    const login = async (username: string, password: string) => {
+        const response = await api.post('/login', {username, password});
         localStorage.setItem('token', response.data.token);
         setUser(response.data.user);
     };
 
-    const signup = async (username: string, email: string, password: string) => {
+    const signup = async (username: string, password: string) => {
         const response = await api.post('/signup', {
             user: {
                 username,
-                email,
                 password,
                 password_confirmation: password
             },
