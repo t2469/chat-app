@@ -9,7 +9,7 @@ const LoginPage = () => {
     const router = useRouter();
 
     const [form, setForm] = useState({
-        email: '',
+        username: '',
         password: '',
     });
 
@@ -22,7 +22,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await login(form.email, form.password);
+            await login(form.username, form.password);
             router.push('/servers');
         } catch {
             alert('ログインに失敗しました。');
@@ -34,10 +34,10 @@ const LoginPage = () => {
             <h1 className="text-2xl mb-4">ログイン</h1>
             <form onSubmit={handleSubmit}>
                 <input
-                    type="email"
-                    name="email"
-                    placeholder="メールアドレス"
-                    value={form.email}
+                    type="username"
+                    name="username"
+                    placeholder="ユーザー名"
+                    value={form.username}
                     onChange={handleChange}
                     required
                     className="w-full p-2 mb-2 border rounded text-black"

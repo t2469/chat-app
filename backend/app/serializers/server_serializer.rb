@@ -1,5 +1,5 @@
 class ServerSerializer < ActiveModel::Serializer
-  attributes :id, :name, :icon_url, :is_member
+  attributes :id, :name, :is_member
 
   def is_member
     object.users.include?(scope)

@@ -67,7 +67,7 @@ module Api
     end
 
     def server_params
-      params.require(:server).permit(:name, :icon_url)
+      params.require(:server).permit(:name)
     end
   end
 end

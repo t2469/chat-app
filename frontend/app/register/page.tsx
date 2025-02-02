@@ -10,7 +10,6 @@ const RegisterPage = () => {
 
     const [form, setForm] = useState({
         username: '',
-        email: '',
         password: '',
         password_confirmation: '',
         avatar_url: '',
@@ -29,7 +28,7 @@ const RegisterPage = () => {
             return;
         }
         try {
-            await signup(form.username, form.email, form.password);
+            await signup(form.username, form.password);
             router.push('/servers');
         } catch {
             setError('登録に失敗しました。');
@@ -45,15 +44,6 @@ const RegisterPage = () => {
                     name="username"
                     placeholder="ユーザー名"
                     value={form.username}
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 mb-2 border rounded text-black"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="メールアドレス"
-                    value={form.email}
                     onChange={handleChange}
                     required
                     className="w-full p-2 mb-2 border rounded text-black"
