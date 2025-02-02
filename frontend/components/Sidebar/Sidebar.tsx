@@ -3,7 +3,6 @@
 import React, {useState} from 'react';
 import {Server} from '@/app/types/server';
 import Link from 'next/link';
-import Image from 'next/image';
 import {usePathname} from 'next/navigation';
 import CreateServerModal from '../Server/CreateServerModal';
 
@@ -12,7 +11,7 @@ type Props = {
     onServerCreated: () => void;
 };
 
-export default function Sidebar({servers, onServerCreated}: Props) {
+export default ({servers, onServerCreated}: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const pathname = usePathname();
     const activeServerId = pathname.split('/')[2];
@@ -33,19 +32,7 @@ export default function Sidebar({servers, onServerCreated}: Props) {
                                 server.id.toString() === activeServerId ? 'border-2 border-blue-500' : ''
                             }`}
                         >
-                            {server.icon_url ? (
-                                <Image
-                                    src={server.icon_url}
-                                    alt={server.name}
-                                    width={24}
-                                    height={24}
-                                    className="rounded-full"
-                                />
-                            ) : (
-                                <span className="text-white text-sm font-bold">
-                                    {server.name.charAt(0).toUpperCase()}
-                                </span>
-                            )}
+                            <span className="text-white text-sm font-bold">{server.name.charAt(0).toUpperCase()}</span>
                         </div>
                     </Link>
                 ))}
