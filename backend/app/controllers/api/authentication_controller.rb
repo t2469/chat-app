@@ -24,7 +24,7 @@ module Api
 
     private
     def user_params
-      params.require(:user).permit(:username, :password, :password_confirmation, :avatar_url)
+      params.require(:user).permit(:username, :password, :password_confirmation)
     end
 
     def encode_token(payload)
