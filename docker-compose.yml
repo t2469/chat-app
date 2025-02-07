@@ -21,6 +21,8 @@ services:
     build:
       context: ./frontend
     container_name: nextjs-frontend
+    volumes:
+      - ./frontend:/usr/src/app
     ports:
       - "8000:3000"
     depends_on:
